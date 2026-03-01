@@ -266,11 +266,69 @@
       const img = findVisualPinByCoords(pixel.left, pixel.top);
       if (img) recolorPin(img, data.status);
     }
+
+    renderStatusCircles(mapState);
+  }
+
+  // ── Status circles overlay ──────────────────────────────────────
+  // Circles live inside the marker layer parent (same coordinate space as pins)
+  // so they pan naturally with the map. A periodic refresh handles zoom changes
+  // and Google Maps rebuilding the layer.
+
+  let circleLayer = null;
+
+  function ensureCircleLayer() {
+    if (circleLayer && document.contains(circleLayer)) return circleLayer;
+
+    const visualLayer = findVisualLayer();
+    if (!visualLayer) return null;
+
+    // Place circles directly inside z-103 layer — exact same coordinate space as pins
+    circleLayer = document.createElement("div");
+    circleLayer.className = "fm-circle-layer";
+    circleLayer.style.cssText = "position:absolute;left:0;top:0;pointer-events:none;";
+    visualLayer.prepend(circleLayer);
+    return circleLayer;
+  }
+
+  function renderStatusCircles(mapState) {
+    const layer = ensureCircleLayer();
+    if (!layer) return;
+
+    layer.innerHTML = "";
+
+    const CIRCLE_SIZE = 36;
+    const HALF = CIRCLE_SIZE / 2;
+
+    for (const [propertyId, data] of Object.entries(statusCache)) {
+      if (!data.lat || !data.lng) continue;
+      const status = STATUSES[data.status];
+      if (!status || !status.color) continue;
+
+      const pixel = latLngToPixel(data.lat, data.lng, mapState);
+      const circle = document.createElement("div");
+      circle.style.cssText = `position:absolute;left:${pixel.left - HALF}px;top:${pixel.top - HALF}px;width:${CIRCLE_SIZE}px;height:${CIRCLE_SIZE}px;border-radius:50%;background:${status.color};opacity:0.35;pointer-events:none;`;
+      circle.dataset.propertyId = propertyId;
+      layer.appendChild(circle);
+    }
+  }
+
+  // ── Periodic circle refresh (handles zoom, layer rebuilds) ──────
+
+  function observeMapState() {
+    setInterval(() => {
+      if (updating) return;
+      updating = true;
+      const mapState = getMapState();
+      if (mapState) renderStatusCircles(mapState);
+      updating = false;
+    }, 3000);
   }
 
   // ── MutationObserver on visual marker layer ─────────────────────
 
   let markerLayerObserver = null;
+  let updating = false;
 
   function observeMarkerLayer() {
     if (markerLayerObserver) markerLayerObserver.disconnect();
@@ -282,12 +340,11 @@
       return;
     }
 
-    let recoloring = false;
     markerLayerObserver = new MutationObserver(() => {
-      if (recoloring) return;
-      recoloring = true;
+      if (updating) return;
+      updating = true;
       applyAllStoredColors();
-      recoloring = false;
+      updating = false;
     });
 
     markerLayerObserver.observe(layer, {
@@ -476,6 +533,7 @@
     await loadStatuses();
     observeDialogs();
     observeMarkerLayer();
+    observeMapState();
     console.log("[Flatmates Enhancer] v0.2 loaded.", Object.keys(statusCache).length, "properties tracked.");
   }
 

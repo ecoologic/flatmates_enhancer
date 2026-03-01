@@ -30,9 +30,26 @@ Color-code property markers on the flatmates.com.au map view by user-assigned st
 
 **Storage**: `browser.storage.local`, keyed by property ID (e.g. `P1827610`)
 
+## Install
+
+### Chrome / Edge / Brave (persistent)
+
+1. Open `chrome://extensions` (or `edge://extensions`, `brave://extensions`)
+2. Enable **Developer mode** (toggle top-right)
+3. Click **Load unpacked** → select this project folder
+4. The extension persists across browser restarts
+
+### Firefox (temporary)
+
+1. Open `about:debugging#/runtime/this-firefox`
+2. Click **Load Temporary Add-on** → select `manifest.json`
+3. Extension is removed when Firefox closes — use `web-ext` for development instead
+
+> For permanent Firefox install, the extension must be signed via [addons.mozilla.org](https://addons.mozilla.org).
+
 ## Development
 
-### Run with auto-reload (recommended)
+### Run with auto-reload
 
 **Firefox:**
 ```bash
@@ -44,13 +61,7 @@ npx web-ext run --source-dir .
 npx web-ext run --source-dir . --target chromium
 ```
 
-Opens the browser with the extension loaded. Auto-reloads on file changes.
-
-### Load manually
-
-**Firefox:** `about:debugging#/runtime/this-firefox` → "Load Temporary Add-on" → select `manifest.json`
-
-**Chrome:** `chrome://extensions` → enable "Developer mode" → "Load unpacked" → select project folder
+Opens a temporary profile with the extension loaded. Auto-reloads on file changes. Storage does **not** persist between sessions.
 
 ### Lint
 
