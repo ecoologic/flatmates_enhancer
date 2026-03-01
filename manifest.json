@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Flatmates Enhancer",
   "version": "0.2.0",
   "description": "Annotate flatmates.com.au listings with status markers on the map view.",

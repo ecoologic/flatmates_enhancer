@@ -30,9 +30,37 @@ Color-code property markers on the flatmates.com.au map view by user-assigned st
 
 **Storage**: `browser.storage.local`, keyed by property ID (e.g. `P1827610`)
 
+## Development
+
+### Run with auto-reload (recommended)
+
+**Firefox:**
+```bash
+npx web-ext run --source-dir .
+```
+
+**Chromium (Chrome/Edge/Brave):**
+```bash
+npx web-ext run --source-dir . --target chromium
+```
+
+Opens the browser with the extension loaded. Auto-reloads on file changes.
+
+### Load manually
+
+**Firefox:** `about:debugging#/runtime/this-firefox` → "Load Temporary Add-on" → select `manifest.json`
+
+**Chrome:** `chrome://extensions` → enable "Developer mode" → "Load unpacked" → select project folder
+
+### Lint
+
+```bash
+npx web-ext lint
+```
+
 ## Tech
 
-* Firefox extension (Manifest V2)
+* Browser extension (Manifest V3, works in Firefox and Chromium)
 * `browser.*` APIs
 * Plain JS/HTML/CSS — no build step
 * Data persists in `browser.storage.local`

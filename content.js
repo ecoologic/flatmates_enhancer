@@ -1,14 +1,19 @@
 (function () {
   "use strict";
 
+  // ── Cross-browser compat (Firefox=browser, Chrome=chrome) ────────
+  if (typeof browser === "undefined" && typeof chrome !== "undefined") {
+    window.browser = chrome;
+  }
+
   // ── Status definitions ────────────────────────────────────────────
 
   const STATUSES = {
-    unseen:      { label: "Unseen",      color: null,      svgFill: null,      svgStroke: null },
-    unsuitable:  { label: "Unsuitable",  color: "#6b7280", svgFill: "#f3f4f6", svgStroke: "#6b7280" },
+    unseen: { label: "Unseen", color: null, svgFill: null, svgStroke: null },
+    unsuitable: { label: "Unsuitable", color: "#6b7280", svgFill: "#f3f4f6", svgStroke: "#6b7280" },
     interesting: { label: "Interesting", color: "#f59e0b", svgFill: "#fef3c7", svgStroke: "#f59e0b" },
-    messaged:    { label: "Messaged",    color: "#22c55e", svgFill: "#dcfce7", svgStroke: "#22c55e" },
-    rejected:    { label: "Rejected",    color: "#374151", svgFill: "#f3f4f6", svgStroke: "#374151" },
+    messaged: { label: "Messaged", color: "#22c55e", svgFill: "#dcfce7", svgStroke: "#22c55e" },
+    rejected: { label: "Rejected", color: "#374151", svgFill: "#f3f4f6", svgStroke: "#374151" },
   };
 
   const STATUS_ORDER = ["unseen", "unsuitable", "interesting", "messaged", "rejected"];
@@ -277,8 +282,12 @@
       return;
     }
 
+    let recoloring = false;
     markerLayerObserver = new MutationObserver(() => {
+      if (recoloring) return;
+      recoloring = true;
       applyAllStoredColors();
+      recoloring = false;
     });
 
     markerLayerObserver.observe(layer, {
@@ -320,18 +329,29 @@
     floatingButton.addEventListener("click", async (e) => {
       e.stopPropagation();
       e.preventDefault();
-      alert("HI");
-      if (!activePropertyContext) return;
+      console.log('[FM] click handler fired, activePropertyContext:', !!activePropertyContext);
+      if (!activePropertyContext) {
+        console.log('[FM] BAIL: activePropertyContext is null');
+        return;
+      }
 
       const { propertyId, lat, lng, dialogLabel } = activePropertyContext;
       const current = floatingButton.dataset.status || "unseen";
       const idx = STATUS_ORDER.indexOf(current);
       const next = STATUS_ORDER[(idx + 1) % STATUS_ORDER.length];
+      console.log('[FM] cycling:', current, '→', next, 'property:', propertyId);
 
       await saveStatus(propertyId, next, lat, lng);
+      console.log('[FM] saved to storage');
+
+      console.log('[FM] before applyStatusStyle, button text:', floatingButton.textContent);
       applyStatusStyle(floatingButton, next);
+      console.log('[FM] after applyStatusStyle, button text:', floatingButton.textContent, 'dataset:', floatingButton.dataset.status);
+      console.log('[FM] button is same DOM element?', floatingButton === document.querySelector('.fm-status-button'));
+
       if (dialogLabel) applyStatusStyle(dialogLabel, next);
       recolorActivePin(next);
+      console.log('[FM] cycle complete');
     });
 
     document.body.appendChild(floatingButton);
@@ -347,6 +367,7 @@
   }
 
   function hideFloatingButton() {
+    console.log('[FM] hideFloatingButton called', new Error().stack);
     if (floatingButton) floatingButton.style.display = "none";
     activePropertyContext = null;
   }
@@ -426,13 +447,22 @@
     showFloatingButton(propertyId, lat, lng, dialogLabel);
 
     // Hide floating button when dialog is removed from DOM
-    const removalObserver = new MutationObserver(() => {
-      if (!document.body.contains(dialog)) {
-        hideFloatingButton();
-        removalObserver.disconnect();
+    // Observe only the dialog's direct parent to avoid firing on every subtree mutation
+    // (e.g. applyStatusStyle setting textContent would trigger a body-wide subtree observer,
+    //  which could race and null out activePropertyContext mid-cycle)
+    const dialogParent = dialog.parentElement || document.body;
+    const removalObserver = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        for (const removed of m.removedNodes) {
+          if (removed === dialog || removed.contains?.(dialog)) {
+            hideFloatingButton();
+            removalObserver.disconnect();
+            return;
+          }
+        }
       }
     });
-    removalObserver.observe(document.body, { childList: true, subtree: true });
+    removalObserver.observe(dialogParent, { childList: true });
 
     // Recolor the active pin to match stored status
     if (currentStatus !== "unseen") {
