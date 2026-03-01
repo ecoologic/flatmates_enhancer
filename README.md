@@ -1,5 +1,7 @@
 # Flatmates enhancer
 
+> Vibe coded with Claude Code
+
 ## Goal
 
 Provide extra features on flatmates.com to annotate details about listings and people.
