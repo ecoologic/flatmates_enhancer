@@ -1,0 +1,66 @@
+[     123ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ https://measureadv.com/userBackIframe?uid=97ac3647-9a7e-4763-a934-131dcf6db8ab&gdpr={GDPR}&gdpr_consent={GDPR_CONSENT}&p=9:0
+[     129ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ https://measureadv.com/userBackIframe?uid=E5271883-6A75-4408-B068-168084F60BDD&gdpr={GDPR}&gdpr_consent={GDPR_CONSENT}&p=13:0
+[     152ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ https://measureadv.com/userBackIframe?uid=4499852808838177729&gdpr={GDPR}&gdpr_consent={GDPR_CONSENT}&p=7:0
+[     366ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ https://measureadv.com/userBackIframe?uid=C-eAEdycsNxDAIBcBe3jmWbD4LpBsbQhPR9r7SznVemOKGSIQr-XRnX2ZGgQvrf63F9mSM7KAh3TZinT2Y85ObIp0dF0gcN7yNKGc8XdNUt_FR21JVoodK8P0B-gYcGQ&gdpr={GDPR}&gdpr_consent={GDPR_CONSENT}&p=1:0
+[   -2279ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ https://cs.nex8.net/cs/openx:0
+[   -2243ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://dps.jp.cinarra.com/pxd?PLATFORM_ID=1&USER_ID=c8c02488-3d34-8ec6-c8b0-615cddaac5d8:0
+[   -2063ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://match.rundsp.com/redirect?ex=openx:0
+[   -1666ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://j.mrpdata.net/c.html?ex=OpenX:0
+[     447ms] [ERROR] Failed to load resource: net::ERR_HTTP2_SERVER_REFUSED_STREAM @ https://cs.admanmedia.com/e805be652c9053b8f771665f0ac3c361.gif?puid=k-_3VNX2sw1RhQnEHN_bgE7XH4HY2rDzxEJ6nkZg&redir=https%3a%2f%2fssp-sync.criteo.com%2fuser-sync%2fmatch%3fp%3dT-213V9ocmZFWlJTQ0FoT0hBakglMkJpOXhWeWxrWiUyRm5RZDJOelZmdXBZYkYydEd6NCUzRA%26u%3d%5bUID%5d&gdpr=&gdpr_consent=&ccpa=:0
+[     853ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     853ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     909ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     909ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     937ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     853ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     853ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     909ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     909ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     937ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     853ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     853ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     909ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     909ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     937ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     853ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     853ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     909ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     909ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     937ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     853ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     853ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     909ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     909ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[     937ms] [ERROR] Framing 'https://safeinator.reamedia.com.au/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self' www.realestate.com.au". The violation has been logged, but no further action has been taken.
+ @ :0
+[    2022ms] TypeError: Cannot read properties of undefined (reading 'setRushSimulatedLocalEvents')
+    at https://s0.2mdn.net/sadbundle/2665659933642483387/index.html?ev=01_262:300:498
+[    2156ms] [ERROR] Attestation check for Attribution Reporting on https://ad.doubleclick.net failed. @ https://flatmates.com.au/:0
+[    2213ms] [ERROR] Attestation check for Attribution Reporting on https://ad.doubleclick.net failed. @ https://flatmates.com.au/:0
+[    2333ms] [ERROR] Attestation check for Shared Storage on https://www.googleadservices.com failed. @ https://www.googleadservices.com/pagead/managed/js/activeview/current/reach_worklet.html:0
+[    2336ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://flatmates.com.au/:0
+[    8873ms] [WARNING] The resource https://flatmates-res.cloudinary.com/image/asset/c_fill,f_auto,g_center,h_342,q_auto,w_414/person-443bab81a0cbdee404cdd629831ccd89.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://flatmates.com.au/:0

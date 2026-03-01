@@ -1,0 +1,47 @@
+/* ── Status Label (read-only pill in dialog, top-left) ─────────── */
+
+.fm-status-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 3px 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  pointer-events: none;
+  z-index: 1;
+  line-height: 1.4;
+}
+
+/* ── Floating Status Button (bottom-right, cycles status) ──────── */
+
+.fm-status-button {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, opacity 0.15s;
+  z-index: 10000;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.fm-status-button:hover {
+  opacity: 0.85;
+}
+
+.fm-status-button:active {
+  transform: scale(0.95);
+}
