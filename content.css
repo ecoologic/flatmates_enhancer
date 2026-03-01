@@ -165,3 +165,15 @@
 .fm-notes-save:hover {
   background: #2563eb;
 }
+
+/* ── Female-only Pill ──────────────────────────────────────────── */
+
+.fm-female-pill {
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: #fce7f3;
+  color: #be185d;
+  font: 600 13px/1 sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}

@@ -16,7 +16,7 @@ This is an unofficial tool, not affiliated with or endorsed by flatmates.com.au.
 
 ## Features
 
-Works on the flatmates.com.au **map view**. Click any property pin to see the toolbar in the bottom-right corner.
+Works on flatmates.com.au **map view** and **listing detail pages**.
 
 ### Status tracking
 
@@ -32,6 +32,14 @@ Cycle through statuses by clicking the status button. The map pin is color-coded
 | Rejected    | dark grey  |
 
 Note: The "map bubble status" (circle in the map of the color of the status) is imprecise, hopefully it's good enough.
+
+### Listing page support
+
+Open any listing detail page (e.g. `/share-house-...-P1234567`) and the status/notes toolbar appears automatically. Statuses set on a listing page sync with the map — visiting the same pin later will show the status you set.
+
+### Female-only indicator
+
+Listings containing "female only flat" or "women only" display a pink **♀ Female only** pill in the toolbar.
 
 ### Private notes
 

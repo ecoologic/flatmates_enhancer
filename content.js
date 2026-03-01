@@ -34,7 +34,7 @@
     if (statusKey === "unseen" && !existing.notes) {
       delete statusCache[propertyId];
     } else {
-      statusCache[propertyId] = { ...existing, status: statusKey, lat, lng };
+      statusCache[propertyId] = { ...existing, status: statusKey, lat: lat ?? existing.lat, lng: lng ?? existing.lng };
     }
     await browser.storage.local.set({ propertyStatuses: statusCache });
   }
@@ -673,13 +673,43 @@
     }
   }
 
+  // ── Page-type detection ──────────────────────────────────────────
+
+  function isMapPage() {
+    return /\/maps(\?|$)/.test(window.location.pathname + window.location.search);
+  }
+
+  // ── Listing page support ──────────────────────────────────────────
+
+  function initListingPage() {
+    const propertyId = extractPropertyId(window.location.pathname);
+    if (!propertyId) return;
+
+    activePropertyContext = { propertyId, lat: null, lng: null, dialogLabel: null };
+    showFloatingButton(propertyId, null, null, null);
+
+    // Scan for female-only keywords
+    const bodyText = document.body.innerText.toLowerCase();
+    if (/all female flat|women only/.test(bodyText)) {
+      const row = ensureButtonRow();
+      const pill = document.createElement("span");
+      pill.className = "fm-female-pill";
+      pill.textContent = "\u2640 Female only";
+      row.appendChild(pill);
+    }
+  }
+
   // ── Init ────────────────────────────────────────────────────────
 
   async function init() {
     await loadStatuses();
-    observeDialogs();
-    observeMarkerLayer();
-    observeMapState();
+    if (isMapPage()) {
+      observeDialogs();
+      observeMarkerLayer();
+      observeMapState();
+    } else {
+      initListingPage();
+    }
     console.log("[Flatmates Enhancer] v0.2 loaded.", Object.keys(statusCache).length, "properties tracked.");
   }
 

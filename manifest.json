@@ -15,7 +15,9 @@
     {
       "matches": [
         "*://flatmates.com.au/*/maps*",
-        "*://www.flatmates.com.au/*/maps*"
+        "*://www.flatmates.com.au/*/maps*",
+        "*://flatmates.com.au/*-P*",
+        "*://www.flatmates.com.au/*-P*"
       ],
       "js": ["content.js"],
       "css": ["content.css"],
