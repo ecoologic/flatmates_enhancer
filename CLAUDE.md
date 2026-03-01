@@ -22,9 +22,10 @@ about:debugging#/runtime/this-firefox → "Load Temporary Add-on" → select man
 # Lint (if web-ext is installed)
 npx web-ext lint
 
-# Run with auto-reload
+# Run with auto-reload (recommended — persists storage across reloads)
 npx web-ext run
 ```
+
 
 ## Conventions
 

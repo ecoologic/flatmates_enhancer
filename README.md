@@ -61,7 +61,18 @@ npx web-ext run --source-dir .
 npx web-ext run --source-dir . --target chromium
 ```
 
-Opens a temporary profile with the extension loaded. Auto-reloads on file changes. Storage does **not** persist between sessions.
+Opens a temporary profile with the extension loaded. Auto-reloads on file changes.
+
+### Storage persistence
+
+Data is stored via `browser.storage.local`, which survives browser restarts. However, **how** you load the extension matters:
+
+| Method | Storage persists? |
+|---|---|
+| Chromium "Load unpacked" | Yes — stable extension ID |
+| Firefox `about:debugging` (temporary add-on) | **No** — extension ID changes each load, so storage is lost when Firefox closes |
+| `web-ext run` | Yes, if you reuse the same profile (default behaviour) |
+| Signed / installed extension | Yes |
 
 ### Lint
 

@@ -18,7 +18,7 @@
 
   const STATUS_ORDER = ["unseen", "unsuitable", "interesting", "messaged", "rejected"];
 
-  // In-memory cache: { [propertyId]: { status, lat, lng } }
+  // In-memory cache: { [propertyId]: { status, lat, lng, notes? } }
   let statusCache = {};
 
   // ── Storage helpers ─────────────────────────────────────────────
@@ -29,10 +29,21 @@
   }
 
   async function saveStatus(propertyId, statusKey, lat, lng) {
-    if (statusKey === "unseen") {
+    const existing = statusCache[propertyId] || {};
+    if (statusKey === "unseen" && !existing.notes) {
       delete statusCache[propertyId];
     } else {
-      statusCache[propertyId] = { status: statusKey, lat, lng };
+      statusCache[propertyId] = { ...existing, status: statusKey, lat, lng };
+    }
+    await browser.storage.local.set({ propertyStatuses: statusCache });
+  }
+
+  async function saveNotes(propertyId, notes) {
+    const existing = statusCache[propertyId] || {};
+    if (!notes && (!existing.status || existing.status === "unseen")) {
+      delete statusCache[propertyId];
+    } else {
+      statusCache[propertyId] = { ...existing, notes: notes || undefined };
     }
     await browser.storage.local.set({ propertyStatuses: statusCache });
   }
@@ -371,13 +382,37 @@
     return label;
   }
 
-  // ── Floating status button (bottom-right, cycles status) ───────
+  // ── Toolbar (bottom-right, contains status button + notes button) ─
 
+  let toolbar = null;
   let floatingButton = null;
+  let notesToggle = null;
+  let notesPanel = null;
   let activePropertyContext = null; // { propertyId, lat, lng, dialogLabel }
+
+  function ensureToolbar() {
+    if (toolbar) return toolbar;
+    toolbar = document.createElement("div");
+    toolbar.className = "fm-toolbar";
+    document.body.appendChild(toolbar);
+    return toolbar;
+  }
+
+  function ensureButtonRow() {
+    const bar = ensureToolbar();
+    let row = bar.querySelector(".fm-toolbar-row");
+    if (!row) {
+      row = document.createElement("div");
+      row.className = "fm-toolbar-row";
+      bar.appendChild(row);
+    }
+    return row;
+  }
 
   function ensureFloatingButton() {
     if (floatingButton) return floatingButton;
+
+    const row = ensureButtonRow();
 
     floatingButton = document.createElement("button");
     floatingButton.className = "fm-status-button";
@@ -386,46 +421,145 @@
     floatingButton.addEventListener("click", async (e) => {
       e.stopPropagation();
       e.preventDefault();
-      console.log('[FM] click handler fired, activePropertyContext:', !!activePropertyContext);
-      if (!activePropertyContext) {
-        console.log('[FM] BAIL: activePropertyContext is null');
-        return;
-      }
+      if (!activePropertyContext) return;
 
       const { propertyId, lat, lng, dialogLabel } = activePropertyContext;
       const current = floatingButton.dataset.status || "unseen";
       const idx = STATUS_ORDER.indexOf(current);
       const next = STATUS_ORDER[(idx + 1) % STATUS_ORDER.length];
-      console.log('[FM] cycling:', current, '→', next, 'property:', propertyId);
 
       await saveStatus(propertyId, next, lat, lng);
-      console.log('[FM] saved to storage');
-
-      console.log('[FM] before applyStatusStyle, button text:', floatingButton.textContent);
       applyStatusStyle(floatingButton, next);
-      console.log('[FM] after applyStatusStyle, button text:', floatingButton.textContent, 'dataset:', floatingButton.dataset.status);
-      console.log('[FM] button is same DOM element?', floatingButton === document.querySelector('.fm-status-button'));
-
       if (dialogLabel) applyStatusStyle(dialogLabel, next);
       recolorActivePin(next);
-      console.log('[FM] cycle complete');
     });
 
-    document.body.appendChild(floatingButton);
+    row.appendChild(floatingButton);
     return floatingButton;
   }
 
+  // ── Notes button + panel ──────────────────────────────────────────
+
+  function ensureNotesButton() {
+    if (notesToggle) return notesToggle;
+
+    const row = ensureButtonRow();
+
+    notesToggle = document.createElement("button");
+    notesToggle.className = "fm-notes-toggle";
+    notesToggle.type = "button";
+    notesToggle.textContent = "\u{1F4AC}"; // 💬
+    notesToggle.title = "Notes";
+
+    notesToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      if (!activePropertyContext) return;
+      toggleNotesPanel();
+    });
+
+    row.appendChild(notesToggle);
+    return notesToggle;
+  }
+
+  function ensureNotesPanel() {
+    if (notesPanel) return notesPanel;
+
+    notesPanel = document.createElement("div");
+    notesPanel.className = "fm-notes-panel";
+
+    const header = document.createElement("div");
+    header.className = "fm-notes-header";
+
+    const title = document.createElement("span");
+    title.className = "fm-notes-title";
+    header.appendChild(title);
+
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "fm-notes-close";
+    closeBtn.type = "button";
+    closeBtn.textContent = "\u2715";
+    closeBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeNotesPanel(true);
+    });
+    header.appendChild(closeBtn);
+
+    const textarea = document.createElement("textarea");
+    textarea.className = "fm-notes-textarea";
+    textarea.placeholder = "Add notes about this property\u2026";
+
+    const saveBtn = document.createElement("button");
+    saveBtn.className = "fm-notes-save";
+    saveBtn.type = "button";
+    saveBtn.textContent = "Save";
+    saveBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      closeNotesPanel(true);
+    });
+
+    notesPanel.appendChild(header);
+    notesPanel.appendChild(textarea);
+    notesPanel.appendChild(saveBtn);
+
+    // Insert panel before the button row so it appears above
+    const bar = ensureToolbar();
+    bar.insertBefore(notesPanel, bar.firstChild);
+    return notesPanel;
+  }
+
+  function toggleNotesPanel() {
+    const panel = ensureNotesPanel();
+    if (panel.style.display === "block") {
+      closeNotesPanel(true);
+    } else {
+      openNotesPanel();
+    }
+  }
+
+  function openNotesPanel() {
+    if (!activePropertyContext) return;
+    const panel = ensureNotesPanel();
+    const { propertyId } = activePropertyContext;
+    const stored = statusCache[propertyId];
+
+    panel.querySelector(".fm-notes-title").textContent = "Notes for " + propertyId;
+    panel.querySelector(".fm-notes-textarea").value = stored?.notes || "";
+    panel.style.display = "block";
+    panel.querySelector(".fm-notes-textarea").focus();
+  }
+
+  async function closeNotesPanel(save) {
+    if (!notesPanel) return;
+    if (save && activePropertyContext) {
+      const text = notesPanel.querySelector(".fm-notes-textarea").value.trim();
+      await saveNotes(activePropertyContext.propertyId, text);
+      updateNotesIndicator(activePropertyContext.propertyId);
+    }
+    notesPanel.style.display = "none";
+  }
+
+  function updateNotesIndicator(propertyId) {
+    if (!notesToggle) return;
+    const hasNotes = !!(statusCache[propertyId]?.notes);
+    notesToggle.dataset.hasNotes = hasNotes ? "true" : "false";
+  }
+
+  // ── Show / hide toolbar ───────────────────────────────────────────
+
   function showFloatingButton(propertyId, lat, lng, dialogLabel) {
     const btn = ensureFloatingButton();
+    ensureNotesButton();
     const currentStatus = statusCache[propertyId]?.status || "unseen";
     activePropertyContext = { propertyId, lat, lng, dialogLabel };
     applyStatusStyle(btn, currentStatus);
-    btn.style.display = "block";
+    updateNotesIndicator(propertyId);
+    ensureToolbar().style.display = "flex";
   }
 
   function hideFloatingButton() {
-    console.log('[FM] hideFloatingButton called', new Error().stack);
-    if (floatingButton) floatingButton.style.display = "none";
+    if (toolbar) toolbar.style.display = "none";
+    closeNotesPanel(false);
     activePropertyContext = null;
   }
 
