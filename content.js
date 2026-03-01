@@ -43,7 +43,11 @@
     if (!notes && (!existing.status || existing.status === "unseen")) {
       delete statusCache[propertyId];
     } else {
-      statusCache[propertyId] = { ...existing, notes: notes || undefined };
+      statusCache[propertyId] = {
+        ...existing,
+        status: existing.status || "unseen",
+        notes: notes || undefined,
+      };
     }
     await browser.storage.local.set({ propertyStatuses: statusCache });
   }
@@ -351,19 +355,23 @@
       return;
     }
 
-    markerLayerObserver = new MutationObserver(() => {
-      if (updating) return;
-      updating = true;
-      applyAllStoredColors();
-      updating = false;
-    });
-
-    markerLayerObserver.observe(layer, {
+    const observerOpts = {
       childList: true,
       subtree: true,
       attributes: true,
       attributeFilter: ["src"],
+    };
+
+    markerLayerObserver = new MutationObserver(() => {
+      if (updating) return;
+      updating = true;
+      markerLayerObserver.disconnect();
+      applyAllStoredColors();
+      markerLayerObserver.observe(layer, observerOpts);
+      updating = false;
     });
+
+    markerLayerObserver.observe(layer, observerOpts);
 
     // Initial pass
     applyAllStoredColors();
@@ -582,6 +590,9 @@
   function observeDialogs() {
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
+        // Skip mutations from our own toolbar
+        if (mutation.target.closest?.(".fm-toolbar")) continue;
+
         for (const node of mutation.addedNodes) {
           if (node.nodeType !== Node.ELEMENT_NODE) continue;
 
