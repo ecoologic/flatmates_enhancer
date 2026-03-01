@@ -12,11 +12,12 @@
     unseen: { label: "Unseen", color: null, svgFill: null, svgStroke: null },
     unsuitable: { label: "Unsuitable", color: "#6b7280", svgFill: "#f3f4f6", svgStroke: "#6b7280" },
     interesting: { label: "Interesting", color: "#f59e0b", svgFill: "#fef3c7", svgStroke: "#f59e0b" },
-    messaged: { label: "Messaged", color: "#22c55e", svgFill: "#dcfce7", svgStroke: "#22c55e" },
+    messaged: { label: "Messaged", color: "#3b82f6", svgFill: "#dbeafe", svgStroke: "#3b82f6" },
+    tumbleweed: { label: "Tumbleweed", color: "#a8a29e", svgFill: "#f5f5f4", svgStroke: "#a8a29e" },
     rejected: { label: "Rejected", color: "#374151", svgFill: "#f3f4f6", svgStroke: "#374151" },
   };
 
-  const STATUS_ORDER = ["unseen", "unsuitable", "interesting", "messaged", "rejected"];
+  const STATUS_ORDER = ["unseen", "unsuitable", "interesting", "messaged", "tumbleweed", "rejected"];
 
   // In-memory cache: { [propertyId]: { status, lat, lng, notes? } }
   let statusCache = {};

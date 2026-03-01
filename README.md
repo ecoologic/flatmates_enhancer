@@ -24,11 +24,12 @@ Cycle through statuses by clicking the status button. The map pin is color-coded
 
 | Status      | Color     |
 | ----------- | --------- |
-| Unseen      | (default) |
-| Unsuitable  | grey      |
-| Interesting | orange    |
-| Messaged    | green     |
-| Rejected    | dark grey |
+| Unseen      | (default)  |
+| Unsuitable  | grey       |
+| Interesting | orange     |
+| Messaged    | blue       |
+| Tumbleweed  | warm grey  |
+| Rejected    | dark grey  |
 
 Note: The "map bubble status" (circle in the map of the color of the status) is imprecise, hopefully it's good enough.
 
