@@ -10,6 +10,10 @@ Provide extra features on flatmates.com to annotate details about listings.
 
 This extension does not collect, transmit, or share any data. All annotations are stored locally in your browser via `browser.storage.local`.
 
+## Disclaimer
+
+This is an unofficial tool, not affiliated with or endorsed by flatmates.com.au. Use at your own risk.
+
 ## Features
 
 Works on the flatmates.com.au **map view**. Click any property pin to see the toolbar in the bottom-right corner.
